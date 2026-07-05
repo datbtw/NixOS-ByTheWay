@@ -28,42 +28,40 @@ nix.settings = {
     # Nhét 2 dòng này vào TRONG khối nix.settings luôn
     extra-substituters = [ "https://noctalia.cachix.org" ];
     extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
-  }; # Chỉ một dấu đóng ngoặc này để chốt hạ nix.settings thôi
+  }; 
 
   # 2. Bật các service bắt buộc mà tài liệu yêu cầu
   programs.niri.enable = true;           # Bật compositor Niri chính chủ
   services.upower.enable = true;         # Bật hiển thị phần trăm Pin
   hardware.bluetooth.enable = true;      # Bật quản lý Bluetooth
   services.power-profiles-daemon.enable = true; # Quản lý điện năng (Noctalia cần)
-# =========================================================================
-  # 1. CẤU HÌNH MẶC ĐỊNH (BASE SYSTEM) - CHẠY KERNEL 7.2-NEXT TỪ FLAKE INPUTS
   # =========================================================================
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.buildLinux {
-    version = "7.2.0-next-20260703";
-    modDirVersion = "7.2.0-rc1-next-20260703";
-    src = inputs.linux-next-src;
-    kernelPatches = [ ];
-    extraMeta.branch = "next";
-  });
+  # 1. HỆ THỐNG GỐC (BASE SYSTEM) - CHẠY STABLE ĐẦU 7 MỚI NHẤT (ĂN SẴN CACHE)
+  # =========================================================================
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_latest;
 
   # =========================================================================
-  # 2. CẤU HÌNH PHỤ (SPECIALISATION) - MENU BOOT RIÊNG CHO 7.2-RC2 TỪ TARBALL
+  # 2. CÁC BIẾN THỂ PHỤ (SPECIALISATION)
   # =========================================================================
-  #specialisation = {
-   # rc2.configuration = {
-      # Dùng lib.mkForce để ép đè con rc2 lên con next khi ông chọn menu này
-    #  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
-     #   version = "7.2.0-rc2";
-      #  modDirVersion = "7.2.0-rc2";
-       # src = pkgs.fetchurl {
-        #  url = "https://git.kernel.org/torvalds/t/linux-7.2-rc2.tar.gz";
-          # Tạm thời để chuỗi fake hash toàn số 0 để lừa Nix cho qua vòng gửi xe
-         # sha256 = "0000000000000000000000000000000000000000000000000000";
-       # };
-       # ignoreConfigErrors = true;
-     # }));
-    #};
-  #};  
+  specialisation = {
+    
+    # Menu phụ 1: Chạy hàng RC (Testing) ăn sẵn từ Nixpkgs (Đéo cần điền hash, tự lên đời)
+    rc.configuration = {
+      boot.kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_testing;
+    };
+
+    # Menu phụ 2: CHUYỂN ÔNG THẦN NEXT VÀO ĐÂY ĐỂ TỰ BUILD RIÊNG TỪ SOURCE
+    next.configuration = {
+      boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
+        version = "7.2.0-next-20260703";
+        modDirVersion = "7.2.0-rc1-next-20260703";
+        src = inputs.linux-next-src;
+        kernelPatches = [ ];
+        extraMeta.branch = "next";
+      }));
+    };
+
+  };
   networking.hostName = "nixos-btw"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
@@ -121,7 +119,6 @@ nix.settings = {
     libvdpau-va-gl
 fuzzel
   xwayland-satellite
-config.boot.kernelPackages.cpupower
 brightnessctl
   ];
 
