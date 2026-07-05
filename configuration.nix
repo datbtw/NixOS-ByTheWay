@@ -35,30 +35,35 @@ nix.settings = {
   services.upower.enable = true;         # Bật hiển thị phần trăm Pin
   hardware.bluetooth.enable = true;      # Bật quản lý Bluetooth
   services.power-profiles-daemon.enable = true; # Quản lý điện năng (Noctalia cần)
-specialisation = {
-  next.configuration = {
-    boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
-      version = "7.2.0-next-20260703";
-      modDirVersion = "7.2.0-rc1-next-20260703";
-      src = inputs.linux-next-src;
-      kernelPatches = [ ];
-      extraMeta.branch = "next";
-    }));
-  };
-};
-    # Biến thể RC2 (Đang chờ - khi nào có hàng thì bỏ '#' là dùng được ngay)
-    # rc2.configuration = {
-    #   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.buildLinux {
-    #     version = "7.2.0-rc2";
-    #     modDirVersion = "7.2.0-rc2";
-    #     src = pkgs.fetchurl {
-    #       url = "https://git.kernel.org/torvalds/t/linux-7.2-rc2.tar.gz";
-    #       sha256 = "DÁN_HASH_Ở_ĐÂY_SAU_KHI_BUILD_LẦN_ĐẦU";
-    #     };
-    #     ignoreConfigErrors = true;
-    #   });
-    # };
-  
+# =========================================================================
+  # 1. CẤU HÌNH MẶC ĐỊNH (BASE SYSTEM) - CHẠY KERNEL 7.2-NEXT TỪ FLAKE INPUTS
+  # =========================================================================
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.buildLinux {
+    version = "7.2.0-next-20260703";
+    modDirVersion = "7.2.0-rc1-next-20260703";
+    src = inputs.linux-next-src;
+    kernelPatches = [ ];
+    extraMeta.branch = "next";
+  });
+
+  # =========================================================================
+  # 2. CẤU HÌNH PHỤ (SPECIALISATION) - MENU BOOT RIÊNG CHO 7.2-RC2 TỪ TARBALL
+  # =========================================================================
+  #specialisation = {
+   # rc2.configuration = {
+      # Dùng lib.mkForce để ép đè con rc2 lên con next khi ông chọn menu này
+    #  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
+     #   version = "7.2.0-rc2";
+      #  modDirVersion = "7.2.0-rc2";
+       # src = pkgs.fetchurl {
+        #  url = "https://git.kernel.org/torvalds/t/linux-7.2-rc2.tar.gz";
+          # Tạm thời để chuỗi fake hash toàn số 0 để lừa Nix cho qua vòng gửi xe
+         # sha256 = "0000000000000000000000000000000000000000000000000000";
+       # };
+       # ignoreConfigErrors = true;
+     # }));
+    #};
+  #};  
   networking.hostName = "nixos-btw"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
@@ -114,9 +119,9 @@ specialisation = {
     intel-media-driver
     libva-vdpau-driver
     libvdpau-va-gl
-linuxPackages.cpupower
 fuzzel
   xwayland-satellite
+config.boot.kernelPackages.cpupower
 brightnessctl
   ];
 
