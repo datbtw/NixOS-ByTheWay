@@ -3,6 +3,7 @@
 
   inputs = {
 	nixpkgs.url = "github:NixOS/nixpkgs/master";
+	chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 	noctalia.url = "github:noctalia-dev/noctalia";
     linux-next-src = {
       url = "path:/home/nixos-user/linux-next";
@@ -26,6 +27,7 @@
         ./hardware-configuration.nix
         ./configuration.nix
         home-manager.nixosModules.default
+	chaotic.nixosModules.default
         {
           home-manager.users.nixos-user = import ./home.nix;
           home-manager.backupFileExtension = "backup";
