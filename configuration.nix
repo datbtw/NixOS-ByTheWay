@@ -37,20 +37,21 @@ nix.settings = {
   services.power-profiles-daemon.enable = true; # Quản lý điện năng (Noctalia cần)
   # =========================================================================
   # 1. HỆ THỐNG GỐC (BASE SYSTEM) - CHẠY STABLE ĐẦU 7 MỚI NHẤT (ĂN SẴN CACHE)
+  #    (Gọi chuẩn top-level alias của Nixpkgs)
   # =========================================================================
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # =========================================================================
   # 2. CÁC BIẾN THỂ PHỤ (SPECIALISATION)
   # =========================================================================
   specialisation = {
     
-    # Menu phụ 1: Chạy hàng RC (Testing) ăn sẵn từ Nixpkgs (Đéo cần điền hash, tự lên đời)
+    # Menu phụ 1: Chạy hàng RC (Testing) từ cục nhân trần trên trang Search, bọc lại cho đúng kiểu
     rc.configuration = {
-      boot.kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_testing;
+      boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_testing);
     };
 
-    # Menu phụ 2: CHUYỂN ÔNG THẦN NEXT VÀO ĐÂY ĐỂ TỰ BUILD RIÊNG TỪ SOURCE
+    # Menu phụ 2: Chạy hàng Next tự compile từ source code Git (Giữ nguyên)
     next.configuration = {
       boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
         version = "7.2.0-next-20260703";
