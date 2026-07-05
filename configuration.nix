@@ -39,19 +39,21 @@ nix.settings = {
   # 1. HỆ THỐNG GỐC (BASE SYSTEM) - CHẠY STABLE ĐẦU 7 MỚI NHẤT (ĂN SẴN CACHE)
   #    (Gọi chuẩn top-level alias của Nixpkgs)
   # =========================================================================
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # 1. Daily Driver: Chính thức đưa siêu phẩm CachyOS LTO lên làm mặc định
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
   # =========================================================================
   # 2. CÁC BIẾN THỂ PHỤ (SPECIALISATION)
   # =========================================================================
   specialisation = {
-    
-    # Menu phụ 1: Chạy hàng RC (Testing) từ cục nhân trần trên trang Search, bọc lại cho đúng kiểu
+
+    # Menu phụ 1: Chạy hàng RC (Testing) từ cục nhân trần vanilla
+    # (Do ông dùng lib.mkForce nên nó sẽ đè bẹp thằng CachyOS ở trên khi ông chọn boot vào RC)
     rc.configuration = {
       boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_testing);
     };
 
-    # Menu phụ 2: Chạy hàng Next tự compile từ source code Git (Giữ nguyên)
+    # Menu phụ 2: Chạy hàng Next tự compile từ source code Git (Giữ nguyên vẹn không sứt mẻ một phân)
     next.configuration = {
       boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
         version = "7.2.0-next-20260703";
