@@ -34,38 +34,15 @@
   system.stateVersion = "26.05"; # Giữ nguyên phân vùng gốc của ông
 
   # =========================================================================
-  # 🚀 KERNEL & SPECIALISATION (HỆ THỐNG 3 NHÂN TỰ ĐỘ KHÉT LẸT)
+  # 🚀 KERNEL & SPECIALISATION (HỆ THỐNG 2 NHÂN TINH GỌN)
   # =========================================================================
   # 1. MẶC ĐỊNH: Nhân CachyOS Latest + Clang ThinLTO + Tối ưu hóa x86_64-v3 (Ăn theo nixpkgs master)
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
 
   specialisation = {
-    # 🛑 BIẾN THỂ 1: Nhân CachyOS RC (Release Candidate) tracking chuẩn chỉ
+    # 🛑 BIẾN THỂ 1: Nhân CachyOS RC (Release Candidate) tracking chuẩn chỉ phòng thân
     rc.configuration = {
       boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-rc;
-    };
-
-    # 🏎️ BIẾN THỂ 2: Quái vật phòng thí nghiệm "linux-next" tự độ bằng Clang ThinLTO + BORE Scheduler
-    next.configuration = {
-      boot.kernelPackages = lib.mkForce (
-        let
-          customCachyNext = pkgs.cachyosKernels.linux-cachyos-latest.override {
-            pname = "linux-cachyos-next";
-            version = "7.2.0-next-20260706";
-            src = inputs.linux-next-src; # Thọc trực tiếp mã nguồn local của ông vào
-
-            # Tham số độ nhân sử dụng framework của xddxdd
-            cpusched = "bore";          # Ép nhân ăn Scheduler BORE mượt mà
-            lto = "thin";               # Bật Clang ThinLTO tối ưu sâu
-            processorOpt = "x86_64-v3"; # Tối ưu hóa riêng cho kiến trúc chip đời mới
-            bbr3 = true;                # Kích hoạt thuật toán mạng siêu tốc BBRv3
-            ccHarder = true;            # Ép compiler tối ưu bạo lực tối đa
-          };
-        in
-        # Hỗ trợ cấu hình Clang LTO tránh lỗi các out-of-tree modules
-        (pkgs.callPackage "${inputs.nix-cachyos-kernel}/helpers.nix" {}).kernelModuleLLVMOverride 
-          (pkgs.linuxKernel.packagesFor customCachyNext)
-      );
     };
   };
 
@@ -105,9 +82,9 @@
   environment.variables.LIBVA_DRIVERS_PATH = "/run/opengl-driver/lib/dri";
 
   # =========================================================================
-  # 🌐 SERVICES, COMPOSITORS & NETWORKING (ĐÃ FIX BOOTLOADER VÀ GRUB)
+  # 🌐 SERVICES, COMPOSITORS & NETWORKING
   # =========================================================================
-  boot.loader.systemd-boot.enable = true;     # Trả lại tên cho em
+  boot.loader.systemd-boot.enable = true;     
   boot.loader.grub.enable = false;            # Diệt tận gốc con ma Ghost GRUB của cụm master
   boot.loader.efi.canTouchEfiVariables = true;
 
