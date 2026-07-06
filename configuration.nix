@@ -105,8 +105,12 @@
   environment.variables.LIBVA_DRIVERS_PATH = "/run/opengl-driver/lib/dri";
 
   # =========================================================================
-  # 🌐 SERVICES, COMPOSITORS & NETWORKING
+  # 🌐 SERVICES, COMPOSITORS & NETWORKING (ĐÃ FIX BOOTLOADER VÀ GRUB)
   # =========================================================================
+  boot.loader.systemd-boot.enable = true;     # Trả lại tên cho em
+  boot.loader.grub.enable = false;            # Diệt tận gốc con ma Ghost GRUB của cụm master
+  boot.loader.efi.canTouchEfiVariables = true;
+
   networking.hostName = "nixos-btw";
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Ho_Chi_Minh";
