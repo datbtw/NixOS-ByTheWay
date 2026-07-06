@@ -80,8 +80,8 @@
     "linux-next-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1783096471,
-        "narHash": "sha256-8FnN7XLZ64kKZh07JcP+wNtEJXhyr23r74jHXcbjGrM=",
+        "lastModified": 1783353851,
+        "narHash": "sha256-0qKmMFj5nd9o6/U5bfktW39KUmFr3cFaxOJu6VFKjto=",
         "path": "/home/nixos-user/linux-next",
         "type": "path"
       },
@@ -108,11 +108,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1783351901,
-        "narHash": "sha256-IczvMGFaBz8nz00Oy6+MBoL25Z+LUkwjcrmzZXRSmTo=",
+        "lastModified": 1783353537,
+        "narHash": "sha256-7nrY9gpEATYbJK4ZlpRVyO1iyiz5/sH8dIfHsfGHnrA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "237896cc13f6bad002cad18f755b213740932b97",
+        "rev": "fec2e6d5f31cface71f9091ade22f987c4c684f2",
         "type": "github"
       },
       "original": {
