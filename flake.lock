@@ -105,6 +105,7 @@
       },
       "original": {
         "owner": "xddxdd",
+        "ref": "release",
         "repo": "nix-cachyos-kernel",
         "type": "github"
       }
@@ -142,11 +143,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1783362204,
-        "narHash": "sha256-exErRMTW8EoOchD3y+x4kGsxXGyTphIB+V43DzmQFqQ=",
+        "lastModified": 1783369941,
+        "narHash": "sha256-mYHWYk7RIzEDGczHy7ahyjhVH5db8KPsipnu8GP2TXk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4c64ee155c28a9f4d9e714ff9d880767da416141",
+        "rev": "c73480ae3f1116cbd96b20210d21950d801a20a1",
         "type": "github"
       },
       "original": {
