@@ -1,10 +1,15 @@
 {
-  description = "NixOS Unstable Flake";
+  description = "NixOS Master Flake - 3 Kernels Setup";
 
   inputs = {
-	nixpkgs.url = "github:NixOS/nixpkgs/master";
-	chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-	noctalia.url = "github:noctalia-dev/noctalia";
+    # Giữ nguyên nhánh master đu đỉnh 26.11-pre của ông
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    
+    # Thay thế hoàn toàn chaotic bằng kho cachyos-kernel nhánh master của xddxdd
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
+    
+    noctalia.url = "github:noctalia-dev/noctalia";
+    
     linux-next-src = {
       url = "path:/home/nixos-user/linux-next";
       flake = false;
@@ -16,18 +21,20 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, chaotic, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-cachyos-kernel, ... }@inputs: {
     nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
-      # Bơm inputs xuống các file con (configuration.nix) để lấy mã nguồn kernel cục bộ
+      # Quan trọng: Bơm inputs xuống các file con để configuration.nix bốc được 'nix-cachyos-kernel' và 'linux-next-src'
       specialArgs = { inherit inputs; };
 
       modules = [
         ./hardware-configuration.nix
         ./configuration.nix
         home-manager.nixosModules.default
-	chaotic.nixosModules.default
+        
+        # Đã xóa bỏ dòng dòng chaotic.nixosModules.default ở đây 
+        # Vì cấu hình mới ăn trực tiếp qua default overlay trong configuration.nix rồi
         {
           home-manager.users.nixos-user = import ./home.nix;
           home-manager.backupFileExtension = "backup";
