@@ -14,50 +14,31 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # =========================================================================
-  # CẤU HÌNH KERNEL (Dòng dự phòng nằm ngay bên dưới)
-  # =========================================================================
-  # boot.kernelPackages = pkgs.linuxPackages_latest; 
 
 
-  # 1. Giới hạn tài nguyên build (đưa ra ngoài để tránh lỗi)
-  # Máy chạy êm, không nóng ran khi rebuild
 nix.settings = {
     cores = 12;
     sandbox = false;
-    # Nhét 2 dòng này vào TRONG khối nix.settings luôn
     extra-substituters = [ "https://noctalia.cachix.org" ];
     extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
   }; 
 
-  # 2. Bật các service bắt buộc mà tài liệu yêu cầu
   programs.niri.enable = true;           # Bật compositor Niri chính chủ
   services.upower.enable = true;         # Bật hiển thị phần trăm Pin
   hardware.bluetooth.enable = true;      # Bật quản lý Bluetooth
   services.power-profiles-daemon.enable = true; # Quản lý điện năng (Noctalia cần)
-  # =========================================================================
-  # 1. HỆ THỐNG GỐC (BASE SYSTEM) - CHẠY STABLE ĐẦU 7 MỚI NHẤT (ĂN SẴN CACHE)
-  #    (Gọi chuẩn top-level alias của Nixpkgs)
-  # =========================================================================
-  # 1. Daily Driver: Chính thức đưa siêu phẩm CachyOS LTO lên làm mặc định
   boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
-  # =========================================================================
-  # 2. CÁC BIẾN THỂ PHỤ (SPECIALISATION)
-  # =========================================================================
   specialisation = {
 
-    # Menu phụ 1: Chạy hàng RC (Testing) từ cục nhân trần vanilla
-    # (Do ông dùng lib.mkForce nên nó sẽ đè bẹp thằng CachyOS ở trên khi ông chọn boot vào RC)
     rc.configuration = {
       boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_testing);
     };
 
-    # Menu phụ 2: Chạy hàng Next tự compile từ source code Git (Giữ nguyên vẹn không sứt mẻ một phân)
     next.configuration = {
       boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.buildLinux {
-        version = "7.2.0-next-20260703";
-        modDirVersion = "7.2.0-rc1-next-20260703";
+        version = "7.2.0-rc2-next-20260706";
+        modDirVersion = "7.2.0-rc2-next-20260706";
         src = inputs.linux-next-src;
         kernelPatches = [ ];
         extraMeta.branch = "next";
