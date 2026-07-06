@@ -87,19 +87,6 @@
         "type": "github"
       }
     },
-    "linux-next-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783353851,
-        "narHash": "sha256-0qKmMFj5nd9o6/U5bfktW39KUmFr3cFaxOJu6VFKjto=",
-        "path": "/home/nixos-user/linux-next",
-        "type": "path"
-      },
-      "original": {
-        "path": "/home/nixos-user/linux-next",
-        "type": "path"
-      }
-    },
     "nix-cachyos-kernel": {
       "inputs": {
         "cachyos-kernel": "cachyos-kernel",
@@ -155,11 +142,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1783361797,
-        "narHash": "sha256-l2WdYs+rFM0jFpqObC4a3B9kCVVDvezEvE5js3ucNUY=",
+        "lastModified": 1783362204,
+        "narHash": "sha256-exErRMTW8EoOchD3y+x4kGsxXGyTphIB+V43DzmQFqQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "00f681a25482074c0fa70dc50e81622c38d31228",
+        "rev": "4c64ee155c28a9f4d9e714ff9d880767da416141",
         "type": "github"
       },
       "original": {
@@ -203,7 +190,6 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "linux-next-src": "linux-next-src",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_2",
         "noctalia": "noctalia"
