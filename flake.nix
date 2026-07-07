@@ -6,7 +6,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     
     # Kho kernel CachyOS chính chủ của pháp sư xddxdd nhánh master
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
     
     noctalia.url = "github:noctalia-dev/noctalia";
 
