@@ -14,6 +14,7 @@
 		discord flatpak libreoffice-fresh psmisc bibata-cursors vlc cava cmatrix figlet htop btop 
 	];
 	home.pointerCursor = {
+		enable = true;
 		gtk.enable = true;
 		x11.enable = true;
 		package = pkgs.bibata-cursors;

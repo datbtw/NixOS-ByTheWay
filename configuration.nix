@@ -28,27 +28,10 @@
 
   nixpkgs.config.allowUnfree = true;
   
-  # Đổi sang .default để đồng bộ hoàn hảo với nhánh master/unstable (26.11-pre) trên máy ông
-  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
 
   system.stateVersion = "26.05"; # Giữ nguyên phân vùng gốc của ông
 
-  # =========================================================================
-  # 🚀 KERNEL & SPECIALISATION (HỆ THỐNG 2 NHÂN TINH GỌN)
-  # =========================================================================
-  # 1. MẶC ĐỊNH: Nhân CachyOS Latest + Clang ThinLTO + Tối ưu hóa x86_64-v3 (Ăn theo nixpkgs master)
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
-
-  specialisation = {
-    # 🛑 BIẾN THỂ 1: Nhân CachyOS RC (Release Candidate) tracking chuẩn chỉ phòng thân
-    rc.configuration = {
-      boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-rc;
-    };
-  };
-
-  # =========================================================================
-  # 💻 TỐI ƯU PHẦN CỨNG LAPTOP & SYSCTL (BÙA TĂNG TỐC)
-  # =========================================================================
+ boot.kernelPackages = pkgs.linuxPackages_testing;
   hardware.cpu.intel.updateMicrocode = true; # Cập nhật vi mã CPU Intel đời mới
   services.thermald.enable = true;          # Kiểm soát nhiệt độ laptop thông minh
   services.fstrim.enable = true;             # Tự động dọn block rác SSD hằng tuần để giữ tốc độ
@@ -87,7 +70,13 @@
   boot.loader.systemd-boot.enable = true;     
   boot.loader.grub.enable = false;            # Diệt tận gốc con ma Ghost GRUB của cụm master
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.supportedFilesystems = [ "btrfs" ];
+    boot.initrd.supportedFilesystems = [ "btrfs" ];
+    services.btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      fileSystems = [ "/" ];
+    };
   networking.hostName = "nixos-btw";
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Ho_Chi_Minh";

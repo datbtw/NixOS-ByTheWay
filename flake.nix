@@ -1,12 +1,9 @@
 {
-  description = "NixOS Master Flake - Clean 2 Kernels Setup";
+  description = "NixOS Master Flake";
 
   inputs = {
-    # Nhánh master đu đỉnh 26.11-pre của ông
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     
-    # Kho kernel CachyOS chính chủ của pháp sư xddxdd nhánh master
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
     
     noctalia.url = "github:noctalia-dev/noctalia";
 
@@ -20,7 +17,6 @@
     nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
-      # Bơm inputs xuống các file con (configuration.nix)
       specialArgs = { inherit inputs; };
 
       modules = [
