@@ -1,7 +1,5 @@
-# Chỗ sửa 1: Thêm 'inputs' vào dấu ngoặc nhọn đầu file để home.nix có quyền gọi Flake
 { config, pkgs, inputs, ... }: 
 {
-	# Chỗ sửa 2: Tạo một khối imports để nạp module Noctalia v5 vào Home Manager
 	imports = [
 		inputs.noctalia.homeModules.default
 	];
@@ -10,7 +8,7 @@
 	home.homeDirectory = "/home/nixos-user";
 	home.stateVersion = "26.05";
 	home.packages = with pkgs; [
-		google-chrome spotify fastfetch gnome-tweaks alacritty fish
+		google-chrome spotify fastfetch gnome-tweaks alacritty fish foot 
 		discord flatpak libreoffice-fresh psmisc bibata-cursors vlc cava cmatrix figlet htop btop 
 	];
 	home.pointerCursor = {
@@ -47,7 +45,6 @@
 		};
 	};
 
-	# Chỗ sửa 3: Chèn khối cấu hình giao diện Noctalia v5 vào đây
 	programs.noctalia = {
 		enable = true;
 		systemd.enable = true; # Tự động chạy cùng Niri qua systemd
@@ -59,7 +56,6 @@
 			};
 			wallpaper = {
 				enabled = true;
-				# Nhớ vứt 1 tấm ảnh tên wallpaper.png vào thư mục Pictures hoặc đổi đường dẫn này nhé
 				default.path = "/home/nixos-user/Pictures/wallpaper.png"; 
 			};
 			launch_apps_as_systemd_services = true;

@@ -10,14 +10,11 @@
     ./hardware-configuration.nix
   ];
 
-  # =========================================================================
-  # 👑 NIX & SYSTEM SETTINGS (QUY HOẠCH GỌN GÀNG)
-  # =========================================================================
   nix = {
     settings = {
-      cores = 12;                 # Khóa 12 luồng xử lý cho P-Cores
-      sandbox = false;            # Tắt sandbox theo cấu hình cũ của ông
-      auto-optimise-store = true; # Tự động hard-link các file trùng lặp để tiết kiệm ổ cứng
+      cores = 12;                 
+      sandbox = false;            
+      auto-optimise-store = true; 
       experimental-features = [ "nix-command" "flakes" ];
       
       # Bộ nhớ đệm (Binary Cache) của Noctalia
@@ -29,46 +26,40 @@
   nixpkgs.config.allowUnfree = true;
   
 
-  system.stateVersion = "26.05"; # Giữ nguyên phân vùng gốc của ông
+  system.stateVersion = "26.05"; 
 
  boot.kernelPackages = pkgs.linuxPackages_testing;
-  hardware.cpu.intel.updateMicrocode = true; # Cập nhật vi mã CPU Intel đời mới
-  services.thermald.enable = true;          # Kiểm soát nhiệt độ laptop thông minh
-  services.fstrim.enable = true;             # Tự động dọn block rác SSD hằng tuần để giữ tốc độ
-  powerManagement.cpuFreqGovernor = "performance"; # Ép chạy hiệu năng cao
+  hardware.cpu.intel.updateMicrocode = true; 
+  services.thermald.enable = true;          
+  services.fstrim.enable = true;             
+  powerManagement.cpuFreqGovernor = "performance"; 
 
   boot.kernel.sysctl = {
-    "vm.max_map_count" = 2147483642;             # Cần thiết cho các tác vụ nặng/gaming
-    "net.core.default_qdisc" = "fq";             # Tối ưu hàng đợi mạng
-    "net.ipv4.tcp_congestion_control" = "bbr";   # Thuật toán mạng tăng tốc của Google
-    "vm.swappiness" = 10;                        # Chỉ hoán đổi khi thực sự cạn kiệt RAM
+    "vm.max_map_count" = 2147483642;             
+    "net.core.default_qdisc" = "fq";             
+    "net.ipv4.tcp_congestion_control" = "bbr";   
+    "vm.swappiness" = 10;                        
   };
 
-  # =========================================================================
-  # 🎨 GRAPHICS, DISPLAY & ENVIRONMENT VARIABLES (FOR WAYLAND/NIRI NATIVE)
-  # =========================================================================
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [ intel-media-driver ]; # Tăng tốc phần cứng cho card Intel
+    extraPackages = with pkgs; [ intel-media-driver ]; 
   };
 
   environment.sessionVariables = {
     NIXOS_OZONE_PLATFORM = "wayland";
-    NIXOS_OZONE_WL = "1";         # Ép đống app Electron/Chromium chạy native Wayland
-    MOZ_ENABLE_WAYLAND = "1";     # Ép Firefox chạy native Wayland
+    NIXOS_OZONE_WL = "1";         
+    MOZ_ENABLE_WAYLAND = "1";     
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    SDL_VIDEODRIVER = "wayland";  # Ép app/game dùng SDL ăn Wayland gốc
-    LIBVA_DRIVER_NAME = "iHD";    # Ép hệ thống dùng intel-media-driver
+    SDL_VIDEODRIVER = "wayland";  
+    LIBVA_DRIVER_NAME = "iHD";    
   };
 
   environment.variables.LIBVA_DRIVERS_PATH = "/run/opengl-driver/lib/dri";
 
-  # =========================================================================
-  # 🌐 SERVICES, COMPOSITORS & NETWORKING
-  # =========================================================================
   boot.loader.systemd-boot.enable = true;     
-  boot.loader.grub.enable = false;            # Diệt tận gốc con ma Ghost GRUB của cụm master
+  boot.loader.grub.enable = false;            
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
     boot.initrd.supportedFilesystems = [ "btrfs" ];
@@ -81,31 +72,32 @@
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Ho_Chi_Minh";
 
-  programs.niri.enable = true;                  # Compositor Niri chính chủ
+  programs.niri.enable = true;                 
   programs.firefox.enable = true;
-  programs.gamemode.enable = true;              # Tự động dồn lực CPU khi chạy tác vụ nặng
-  
-  services.upower.enable = true;                # Hiển thị phần trăm Pin
-  hardware.bluetooth.enable = true;             # Bật quản lý Bluetooth
-  services.power-profiles-daemon.enable = true; # Quản lý cấu hình điện năng (Noctalia cần)
-  services.printing.enable = true;              # Dịch vụ in ấn CUPS
-  services.libinput.enable = true;              # Hỗ trợ Touchpad mượt mà
+  programs.gamemode.enable = true;             
+  programs.mango.enable = true;
+  programs.nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 4d --keep 3";
+      flake = "/etc/nixos";
+    };
+  services.upower.enable = true;               
+  hardware.bluetooth.enable = true;            
+  services.power-profiles-daemon.enable = true;
+  services.printing.enable = true;             
+  services.libinput.enable = true;             
 
-  # Bật XServer, GNOME và GDM song song theo cấu hình gốc của ông
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
 
-  # Hệ thống âm thanh PipeWire chuyên nghiệp
   services.pipewire = {
     enable = true;
     pulse.enable = true;
   };
 
-  # =========================================================================
-  # 👤 USER ACCOUNTS & PACKAGES (GIỮ NGUYÊN VẸN ĐỒ CHƠI)
-  # =========================================================================
   users.users.nixos-user = {
     isNormalUser = true;
     description = "NixOS User";
@@ -137,5 +129,6 @@
     fuzzel
     xwayland-satellite
     brightnessctl
-  ];
+    wmenu grim slurp  wl-clipboard 
+ ];
 }
