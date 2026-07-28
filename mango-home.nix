@@ -166,6 +166,7 @@
 		env=QT_IM_MODULES,wayland;fcitx
 		env=GTK_IM_MODULE,fcitx
 		env=XMODIFIERS,@im=fcitx
+		env=XDG_CURRENT_DESKTOP,GNOME
 
 		# Autostart
 		exec-once=fcitx5 -d
