@@ -2,6 +2,9 @@
 {
 	imports = [
 		inputs.noctalia.homeModules.default
+		./mango-home.nix
+		./niri-home.nix
+		./noctalia-home.nix
 	];
 
 	home.username = "nixos-user";
@@ -45,21 +48,13 @@
 		};
 	};
 
-	programs.noctalia = {
-		enable = true;
-		systemd.enable = true; # Tự động chạy cùng Niri qua systemd
-		settings = {
-			theme = {
-				mode = "dark";
-				source = "builtin";
-				builtin = "Catppuccin";
-			};
-			wallpaper = {
-				enabled = true;
-				default.path = "/home/nixos-user/Pictures/wallpaper.png"; 
-			};
-			launch_apps_as_systemd_services = true;
+	systemd.user.services.polkit-agent = {
+		Service = {
+			Type = "simple";
+			ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+			Restart = "on-failure";
 		};
+		Install.WantedBy = [ "graphical-session.target" ];
 	};
 
 	programs.home-manager.enable = true;

@@ -49,14 +49,23 @@
 
   environment.sessionVariables = {
     NIXOS_OZONE_PLATFORM = "wayland";
-    NIXOS_OZONE_WL = "1";         
-    MOZ_ENABLE_WAYLAND = "1";     
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    SDL_VIDEODRIVER = "wayland";  
-    LIBVA_DRIVER_NAME = "iHD";    
+    SDL_VIDEODRIVER = "wayland";
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
   environment.variables.LIBVA_DRIVERS_PATH = "/run/opengl-driver/lib/dri";
+
+  # fcitx5 env vars - override ibus from GNOME module
+  environment.variables.GTK_IM_MODULE = lib.mkForce "fcitx";
+  environment.variables.QT_IM_MODULE = lib.mkForce "fcitx";
+  environment.variables.XMODIFIERS = lib.mkForce "@im=fcitx";
+  environment.variables.SDL_IM_MODULE = lib.mkForce "fcitx";
+  environment.variables.GLFW_IM_MODULE = lib.mkForce "ibus";
+  environment.variables.INPUT_METHOD = lib.mkForce "fcitx";
+  environment.variables.IM_MODULE = lib.mkForce "fcitx";
 
   boot.loader.systemd-boot.enable = true;     
   boot.loader.grub.enable = false;            
@@ -86,7 +95,9 @@
   hardware.bluetooth.enable = true;            
   services.power-profiles-daemon.enable = true;
   services.printing.enable = true;             
-  services.libinput.enable = true;             
+  services.libinput.enable = true;
+
+  security.polkit.enable = true;             
 
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
@@ -129,6 +140,6 @@
     fuzzel
     xwayland-satellite
     brightnessctl
-    wmenu grim slurp  wl-clipboard 
+    wmenu grim slurp  wl-clipboard polkit_gnome
  ];
 }
