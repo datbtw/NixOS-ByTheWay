@@ -28,3 +28,4 @@ Cấu trúc
 CPU: 13th Gen Intel(R) Core(TM) i7-13700H (12+8) @ 5.00 GHz
 DE: Gnome 50.2
 WM: Mango + Niri + Noctalia
+Config cho cá nhân, cảm ơn
