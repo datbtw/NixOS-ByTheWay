@@ -3,11 +3,20 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    
-    
+
     noctalia.url = "github:noctalia-dev/noctalia";
+
     mangowc = {
       url = "github:DreamMaoMao/mangowc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    fcitx5-lotus = {
+      url = "github:LotusInputMethod/fcitx5-lotus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -19,13 +28,15 @@
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
     nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      
+
       specialArgs = { inherit inputs; };
 
       modules = [
         ./hardware-configuration.nix
         ./configuration.nix
-        home-manager.nixosModules.default
+        ./kernel.nix
+	home-manager.nixosModules.default
+        inputs.fcitx5-lotus.nixosModules.fcitx5-lotus
         {
           home-manager.users.nixos-user = import ./home.nix;
           home-manager.backupFileExtension = "backup";

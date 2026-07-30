@@ -1,23 +1,18 @@
-{ config, pkgs, inputs, ... }:
-let
-  unilume = pkgs.callPackage ./unilume.nix { };
-in {
+{ config, pkgs, inputs, ... }: 
+{
 	imports = [
 		inputs.noctalia.homeModules.default
 		./mango-home.nix
 		./niri-home.nix
 		./noctalia-home.nix
-	        ./chrome-home.nix 
-		./iris-home.nix
 	];
 
 	home.username = "nixos-user";
 	home.homeDirectory = "/home/nixos-user";
 	home.stateVersion = "26.05";
 	home.packages = with pkgs; [
-		 spotify fastfetch gnome-tweaks alacritty fish foot
-		discord flatpak libreoffice-fresh psmisc bibata-cursors vlc cava cmatrix figlet htop btop
-		unilume
+		google-chrome spotify fastfetch gnome-tweaks alacritty fish foot 
+		discord flatpak libreoffice-fresh psmisc bibata-cursors vlc cava cmatrix figlet htop btop 
 	];
 	home.pointerCursor = {
 		enable = true;
@@ -30,7 +25,7 @@ in {
 	i18n.inputMethod = {
 		enable = true;
 		type = "fcitx5";
-		fcitx5.addons = with pkgs; [ unilume fcitx5-bamboo ];
+		fcitx5.addons = with pkgs; [fcitx5-bamboo];
 	};
 	programs.bash = {
 		enable = true;
@@ -52,7 +47,17 @@ in {
 			fetch = "fastfetch";
 		};
 	};
+	let
+  unilume = pkgs.callPackage /etc/nixos/unilume.nix { };
+in {
+  home.packages = [ unilume ];
 
+  # Bật Fcitx5 làm input method qua home-manager
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = [ unilume ];
+  };
+}
 	systemd.user.services.polkit-agent = {
 		Service = {
 			Type = "simple";

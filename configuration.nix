@@ -17,7 +17,6 @@
       auto-optimise-store = true; 
       experimental-features = [ "nix-command" "flakes" ];
       
-      # Bộ nhớ đệm (Binary Cache) của Noctalia
       extra-substituters = [ "https://noctalia.cachix.org" ];
       extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
     };
@@ -28,18 +27,7 @@
 
   system.stateVersion = "26.05"; 
 
- boot.kernelPackages = pkgs.linuxPackages_testing;
-  hardware.cpu.intel.updateMicrocode = true; 
-  services.thermald.enable = true;          
   services.fstrim.enable = true;             
-  powerManagement.cpuFreqGovernor = "performance"; 
-
-  boot.kernel.sysctl = {
-    "vm.max_map_count" = 2147483642;             
-    "net.core.default_qdisc" = "fq";             
-    "net.ipv4.tcp_congestion_control" = "bbr";   
-    "vm.swappiness" = 10;                        
-  };
 
   hardware.graphics = {
     enable = true;
@@ -54,18 +42,23 @@
     MOZ_DISABLE_RDD_SANDBOX = "1";
     SDL_VIDEODRIVER = "wayland";
     LIBVA_DRIVER_NAME = "iHD";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
+    FCITX_ADDON_DIRS = "${pkgs.fcitx5-lotus}/lib/fcitx5";
+    SDL_IM_MODULE = "fcitx";
   };
 
   environment.variables.LIBVA_DRIVERS_PATH = "/run/opengl-driver/lib/dri";
 
-  # fcitx5 env vars - override ibus from GNOME module
-  environment.variables.GTK_IM_MODULE = lib.mkForce "fcitx";
-  environment.variables.QT_IM_MODULE = lib.mkForce "fcitx";
-  environment.variables.XMODIFIERS = lib.mkForce "@im=fcitx";
-  environment.variables.SDL_IM_MODULE = lib.mkForce "fcitx";
-  environment.variables.GLFW_IM_MODULE = lib.mkForce "ibus";
-  environment.variables.INPUT_METHOD = lib.mkForce "fcitx";
-  environment.variables.IM_MODULE = lib.mkForce "fcitx";
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      addons = with pkgs; [ fcitx5-gtk fcitx5-lotus ];
+      waylandFrontend = true;
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;     
   boot.loader.grub.enable = false;            
@@ -91,6 +84,10 @@
       clean.extraArgs = "--keep-since 4d --keep 3";
       flake = "/etc/nixos";
     };
+  services.fcitx5-lotus = {
+    enable = true;
+    users = [ "nixos-user" ];
+  };
   services.upower.enable = true;               
   hardware.bluetooth.enable = true;            
   services.power-profiles-daemon.enable = true;
