@@ -15,10 +15,14 @@
       url = "github:LotusInputMethod/fcitx5-lotus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # KHÔNG follows nixpkgs — giữ nixpkgs revision riêng mà repo này đã
+      # pin sẵn để đảm bảo trúng binary cache, tránh phải build kernel từ
+      # source (mất rất nhiều thời gian).
     };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,8 +38,7 @@
       modules = [
         ./hardware-configuration.nix
         ./configuration.nix
-        ./kernel.nix
-	home-manager.nixosModules.default
+        home-manager.nixosModules.default
         inputs.fcitx5-lotus.nixosModules.fcitx5-lotus
         {
           home-manager.users.nixos-user = import ./home.nix;

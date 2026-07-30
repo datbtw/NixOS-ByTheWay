@@ -2,65 +2,32 @@
 let
   unilume = pkgs.callPackage ./unilume.nix { };
 in {
-	imports = [
-		inputs.noctalia.homeModules.default
-		./mango-home.nix
-		./niri-home.nix
-		./noctalia-home.nix
-	        ./chrome-home.nix 
-		./iris-home.nix
-	];
+  imports = [
+    inputs.noctalia.homeModules.default
+    ./mango-home.nix
+    ./niri-home.nix
+    ./noctalia-home.nix
+    ./chrome-home.nix
+    ./iris-home.nix
+    ./shell.nix
+    ./theme-home.nix
+    ./polkit-agent-home.nix
+  ];
 
-	home.username = "nixos-user";
-	home.homeDirectory = "/home/nixos-user";
-	home.stateVersion = "26.05";
-	home.packages = with pkgs; [
-		 spotify fastfetch gnome-tweaks alacritty fish foot
-		discord flatpak libreoffice-fresh psmisc bibata-cursors vlc cava cmatrix figlet htop btop
-		unilume
-	];
-	home.pointerCursor = {
-		enable = true;
-		gtk.enable = true;
-		x11.enable = true;
-		package = pkgs.bibata-cursors;
-		name = "Bibata-Modern-Classic";
-		size = 24;
-	};
-	i18n.inputMethod = {
-		enable = true;
-		type = "fcitx5";
-		fcitx5.addons = with pkgs; [ unilume fcitx5-bamboo ];
-	};
-	programs.bash = {
-		enable = true;
-		initExtra = ''
-			if [[ $- == *i* ]];
-			then
-				exec fish
-			fi
-		'';
-	};
-	programs.fish = {
-		enable = true;
-		interactiveShellInit =''
-			set -g fish_greeting ""
-			fish_add_path "$HOME/.local/bin"
-	        '';
-		shellAliases = {
-			btw = "echo 'I Use NixOS By The Way!'";
-			fetch = "fastfetch";
-		};
-	};
+  home.username = "nixos-user";
+  home.homeDirectory = "/home/nixos-user";
+  home.stateVersion = "26.05";
 
-	systemd.user.services.polkit-agent = {
-		Service = {
-			Type = "simple";
-			ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-			Restart = "on-failure";
-		};
-		Install.WantedBy = [ "graphical-session.target" ];
-	};
+  home.packages = with pkgs; [
+    spotify fastfetch gnome-tweaks alacritty fish foot
+    discord flatpak libreoffice-fresh psmisc bibata-cursors
+    vlc cava cmatrix figlet htop btop
+    unilume
+  ];
 
-	programs.home-manager.enable = true;
+  # i18n.inputMethod đã được gộp về configuration.nix -> input-method.nix
+  # (system-level), không khai báo lại ở đây để tránh xung đột addon list
+  # giữa Lotus / bamboo / unilume.
+
+  programs.home-manager.enable = true;
 }
