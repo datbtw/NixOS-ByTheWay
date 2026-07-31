@@ -12,7 +12,6 @@ in
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
     SDL_IM_MODULE = "fcitx";
-    FCITX_ADDON_DIRS = "${pkgs.fcitx5-lotus}/lib/fcitx5";
   };
 
   i18n.inputMethod = {
@@ -21,7 +20,6 @@ in
     fcitx5 = {
       addons = with pkgs; [
         fcitx5-gtk
-        fcitx5-lotus
         fcitx5-bamboo
         unilume
       ];
