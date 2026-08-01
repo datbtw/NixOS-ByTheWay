@@ -6,8 +6,8 @@
 
     noctalia.url = "github:noctalia-dev/noctalia";
 
-    mangowc = {
-      url = "github:DreamMaoMao/mangowc";
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

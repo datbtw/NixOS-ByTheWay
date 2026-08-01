@@ -7,12 +7,12 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "versenilvis";
       repo = "IRIS";
-      rev = "main"; # nên thay bằng commit sha cụ thể
-      hash = "sha256-eRzUEJd+svdJ0RPwsDzZcxeuDqSUVN5ebZpfuQcS1zI=";
+      rev = "476ca3946b5e129471663a9269d1481b22fd4963"; # nên thay bằng commit sha cụ thể
+      hash = "sha256-oRyFkNvzVQU4br0d9wWhR/qg5WYOjgyeJXm4HWNwYAM=";
     };
     subPackages = [ "cmd/iris" ];
     proxyVendor = true;
-    vendorHash = "sha256-kBSMhUsuCKIjAXjGfl1WSjCX+tlGi9BTnkRu9ScW6M0=";
+    vendorHash ="sha256-KQNloP/Aj283YQ4d5LFu/2Pbb2HbVTZPhLK1fs4xvGw=";
     doCheck = false;
     meta = with lib; {
       description = "A shell auto-completion tool that works like code editor's IntelliSense";

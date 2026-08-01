@@ -79,4 +79,28 @@
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs; };
   };
+
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;   
+                       
+  };
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";   # fix cursor không hiện/giật trên 1 số GPU Intel/NVIDIA
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    configPackages = [ pkgs.hyprland ];
+  };
+
+  security.pam.services.hyprlock = { };
+
+  environment.systemPackages = with pkgs; [
+    hyprpolkitagent   # polkit agent riêng của Hyprland, dùng thay cho polkit_gnome
+                      # (polkit_gnome vẫn cần cho session GNOME hiện tại của bạn,
+                      # giữ nguyên - chỉ thêm hyprpolkitagent cho session Hyprland)
+  ];
 }

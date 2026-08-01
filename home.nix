@@ -4,14 +4,13 @@ let
 in {
   imports = [
     inputs.noctalia.homeModules.default
-    ./mango-home.nix
-    ./niri-home.nix
-    ./noctalia-home.nix
     ./chrome-home.nix
     ./iris-home.nix
     ./shell.nix
     ./theme-home.nix
     ./polkit-agent-home.nix
+    ./hyprland.nix
+    ./noctalia-home.nix
   ];
 
   home.username = "nixos-user";

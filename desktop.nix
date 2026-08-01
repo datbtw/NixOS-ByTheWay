@@ -7,7 +7,5 @@
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
 
-  programs.niri.enable = true;
   programs.gamemode.enable = true;
-  programs.mango.enable = true;
 }
