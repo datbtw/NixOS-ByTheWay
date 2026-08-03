@@ -20,7 +20,4 @@
     "net.ipv4.tcp_congestion_control" = "bbr";
     "vm.swappiness" = 10;
   };
-  specialisation.rc-stock.configuration = {
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
-  };
 }
