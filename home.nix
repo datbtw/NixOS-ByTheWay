@@ -21,7 +21,7 @@ in {
     spotify fastfetch gnome-tweaks alacritty fish foot
     discord flatpak libreoffice-fresh psmisc bibata-cursors
     vlc cava cmatrix figlet htop btop
-    unilume hw-probe
+    unilume hw-probe spotify-player 
   ];
 
   # i18n.inputMethod đã được gộp về configuration.nix -> input-method.nix

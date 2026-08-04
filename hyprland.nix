@@ -43,14 +43,12 @@
     extraConfig = ''
       local mod = "SUPER"
       local terminal = "alacritty"
-
-      -- Autostart (tương đương exec-once)
+-- Autostart (tương đương exec-once)
       -- Noctalia shell tự động chạy qua systemd user service
       -- (programs.noctalia.systemd.enable = true, WantedBy=graphical-session.target)
       hl.on("hyprland.start", function()
         hl.exec_cmd("hypridle")
       end)
-
       -- Monitor — ép scale = 1 (tắt auto scale)
       hl.monitor({
         output   = "",
@@ -115,7 +113,7 @@
       hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
       hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))  -- phóng to nhưng vẫn giữ shell bar
       hl.bind(mod .. " + A", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))  -- app launcher qua Noctalia
-      hl.bind(mod .. " + L", hl.dsp.exec_cmd("hyprlock"))          -- lock screen
+      hl.bind(mod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock")) 		
       hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
 
       -- Volume / Mute (Noctalia tự bật OSD + âm thanh khi đổi volume)

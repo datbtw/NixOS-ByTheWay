@@ -7,11 +7,13 @@ let
   unilume = pkgs.callPackage ./unilume.nix { };
 in
 {
+  # Trên Wayland + Hyprland, GTK3/4 và Qt dùng input-method-v2/text-input-v3 native
+  # nên KHÔNG set GTK_IM_MODULE/QT_IM_MODULE (sẽ chồng 2 đường gõ -> loạn gõ).
+  # waylandFrontend = true dưới đây vốn đã tự bỏ 2 biến đó; chỉ cần XMODIFIERS cho
+  # app XWayland (do module fcitx5 của nixpkgs set sẵn).
   environment.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
     SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus";
   };
 
   i18n.inputMethod = {

@@ -18,9 +18,6 @@
 
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel";
-      # KHÔNG follows nixpkgs — giữ nixpkgs revision riêng mà repo này đã
-      # pin sẵn để đảm bảo trúng binary cache, tránh phải build kernel từ
-      # source (mất rất nhiều thời gian).
     };
 
     home-manager = {
@@ -30,6 +27,9 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+    # Thành công => upstream đã sửa => xóa overlays.nix và dòng nixpkgs.overlays.
+    packages.x86_64-linux.hyprland-no-overlay = nixpkgs.legacyPackages.x86_64-linux.hyprland;
+
     nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 

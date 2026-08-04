@@ -42,6 +42,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # Vá lỗi build Hyprland 0.56.1 với glaze 8.0.0 trên nixpkgs master
+  # (xem overlays.nix để biết chi tiết). Bỏ đi khi upstream đã sửa.
+  nixpkgs.overlays = [ (import ./overlays.nix) ];
+
   system.stateVersion = "26.05";
 
   networking.hostName = "nixos-btw";
