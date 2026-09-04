@@ -1,0 +1,61 @@
+[33mcommit 75238df98acf164aaef00899b3c1178824e017df[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: datbtw <testchatgpt2904@gmail.com>
+Date:   Mon Aug 3 11:04:54 2026 +0700
+
+    refresh commit
+
+[1mdiff --git a/hardware-configuration.nix b/hardware-configuration.nix[m
+[1mindex 015e9d1..5cfd725 100644[m
+[1m--- a/hardware-configuration.nix[m
+[1m+++ b/hardware-configuration.nix[m
+[36m@@ -14,25 +14,25 @@[m
+   boot.extraModulePackages = [ ];[m
+ [m
+   fileSystems."/" =[m
+[31m-    { device = "/dev/disk/by-uuid/9b0507d6-bfd6-48f1-92d9-c1373d2b5c69";[m
+[32m+[m[32m    { device = "/dev/disk/by-uuid/5ffff8f3-3339-4d37-9fd5-41924704b005";[m
+       fsType = "btrfs";[m
+       options = [ "subvol=@" ];[m
+     };[m
+ [m
+   fileSystems."/home" =[m
+[31m-    { device = "/dev/disk/by-uuid/9b0507d6-bfd6-48f1-92d9-c1373d2b5c69";[m
+[32m+[m[32m    { device = "/dev/disk/by-uuid/5ffff8f3-3339-4d37-9fd5-41924704b005";[m
+       fsType = "btrfs";[m
+       options = [ "subvol=@home" ];[m
+     };[m
+ [m
+   fileSystems."/nix" =[m
+[31m-    { device = "/dev/disk/by-uuid/9b0507d6-bfd6-48f1-92d9-c1373d2b5c69";[m
+[32m+[m[32m    { device = "/dev/disk/by-uuid/5ffff8f3-3339-4d37-9fd5-41924704b005";[m
+       fsType = "btrfs";[m
+       options = [ "subvol=@nix" ];[m
+     };[m
+ [m
+   fileSystems."/var/log" =[m
+[31m-    { device = "/dev/disk/by-uuid/9b0507d6-bfd6-48f1-92d9-c1373d2b5c69";[m
+[32m+[m[32m    { device = "/dev/disk/by-uuid/5ffff8f3-3339-4d37-9fd5-41924704b005";[m
+       fsType = "btrfs";[m
+       options = [ "subvol=@log" ];[m
+     };[m
+[36m@@ -44,7 +44,7 @@[m
+     };[m
+ [m
+   swapDevices =[m
+[31m-    [ { device = "/dev/disk/by-uuid/907c9e5e-dea4-42f7-816f-22c388742262"; }[m
+[32m+[m[32m    [ { device = "/dev/disk/by-uuid/7918f8d5-3a8f-4403-8949-0becac0f186c"; }[m
+     ];[m
+ [m
+   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";[m
+[1mdiff --git a/kernel.nix b/kernel.nix[m
+[1mindex 9d71a36..40832fe 100644[m
+[1m--- a/kernel.nix[m
+[1m+++ b/kernel.nix[m
+[36m@@ -20,7 +20,4 @@[m
+     "net.ipv4.tcp_congestion_control" = "bbr";[m
+     "vm.swappiness" = 10;[m
+   };[m
+[31m-  specialisation.rc-stock.configuration = {[m
+[31m-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;[m
+[31m-  };[m
+ }[m
