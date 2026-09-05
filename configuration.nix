@@ -56,7 +56,6 @@
   services.printing.enable = true;
   services.libinput.enable = true;
 
-  programs.firefox.enable = true;
   programs.nh = {
     enable = true;
     clean.enable = true;

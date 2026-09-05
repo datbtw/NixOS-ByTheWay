@@ -1,7 +1,5 @@
 { config, pkgs, inputs, ... }:
-let
-  unilume = pkgs.callPackage ./unilume.nix { };
-in {
+{
   imports = [
     inputs.noctalia.homeModules.default
     ./chrome-home.nix
@@ -18,9 +16,9 @@ in {
 
   home.packages = with pkgs; [
     spotify fastfetch gnome-tweaks alacritty fish foot
-    discord flatpak libreoffice-fresh psmisc bibata-cursors
+    discord flatpak libreoffice-stable  psmisc bibata-cursors
     vlc cava cmatrix figlet htop btop
-    unilume hw-probe spotify-player 
+     hw-probe spotify-player 
   ];
 
   # i18n.inputMethod đã được gộp về configuration.nix -> input-method.nix
