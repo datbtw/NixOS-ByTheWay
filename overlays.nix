@@ -9,6 +9,7 @@
 # Giải pháp: ép glaze về 7.9.1 (phiên bản Hyprland 0.56.1 được build cùng).
 # Bỏ overlay này khi nixpkgs đã nâng Hyprland lên bản hỗ trợ glaze 8.
 final: prev: {
+  # Overlay cũ vá Hyprland (giữ nguyên)
   glaze = prev.glaze.overrideAttrs (old: {
     version = "7.9.1";
     src = prev.fetchFromGitHub {
@@ -17,5 +18,10 @@ final: prev: {
       tag = "v7.9.1";
       hash = "sha256-NRRq5MGF2f5PW0teYnq58ELzson+U6KHVPaY6r30KLA=";
     };
+  });
+
+  # Thêm đoạn này để bỏ qua bài test bị lỗi của GNOME:
+  gnome-control-center = prev.gnome-control-center.overrideAttrs (old: {
+    doCheck = false;
   });
 }

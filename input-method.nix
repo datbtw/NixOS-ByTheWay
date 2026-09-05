@@ -3,9 +3,6 @@
 # khác nhau (fcitx5-lotus ở system, unilume+fcitx5-bamboo ở home) -> đã gộp
 # về đây để tránh xung đột.
 { pkgs, ... }:
-let
-  unilume = pkgs.callPackage ./unilume.nix { };
-in
 {
   # Trên Wayland + Hyprland, GTK3/4 và Qt dùng input-method-v2/text-input-v3 native
   # nên KHÔNG set GTK_IM_MODULE/QT_IM_MODULE (sẽ chồng 2 đường gõ -> loạn gõ).
@@ -23,7 +20,6 @@ in
       addons = with pkgs; [
         fcitx5-gtk
         fcitx5-bamboo
-        unilume
       ];
       waylandFrontend = true;
     };
