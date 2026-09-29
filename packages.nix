@@ -18,10 +18,10 @@
     fuzzel
     xwayland-satellite
     brightnessctl
-    wmenu
     grim
     slurp
     wl-clipboard
     polkit_gnome
+    corefonts
   ];
 }

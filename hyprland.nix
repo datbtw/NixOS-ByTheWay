@@ -18,6 +18,7 @@
     slurp                 # chọn vùng màn hình
     wl-clipboard          # clipboard Wayland
     cliphist              # lịch sử clipboard
+    rofi                  # app launcher + window switcher (thay Noctalia launcher)
     brightnessctl         # chỉnh độ sáng
     playerctl             # điều khiển media
     hyprpicker             # color picker
@@ -112,7 +113,7 @@
       hl.bind(mod .. " + M", hl.dsp.exit())
       hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
       hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))  -- phóng to nhưng vẫn giữ shell bar
-      hl.bind(mod .. " + A", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))  -- app launcher qua Noctalia
+      hl.bind(mod .. " + D", hl.dsp.exec_cmd("rofi -show drun"))  -- app launcher (đọc .desktop XDG)
       hl.bind(mod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock")) 		
       hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
 

@@ -13,6 +13,14 @@
     GLFW_IM_MODULE = "ibus";
   };
 
+  # fcitx5-lotus-server tạo bàn phím ảo qua /dev/uinput, nên cần:
+  # 1) module uinput được load (nếu không, /dev/uinput chỉ là node rỗng -> EVIOCGNAME fail)
+  # 2) quyền ghi cho user uinput_proxy (unit chạy User=uinput_proxy, Group=input)
+  hardware.uinput.enable = true;
+  services.udev.extraRules = ''
+    SUBSYSTEM=="misc", KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
+  '';
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";

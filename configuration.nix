@@ -27,7 +27,12 @@
     # System packages
     ./packages.nix
   ];
-
+  zramSwap = {
+	enable = true;
+	priority = 100;
+	algorithm = "lz4";
+	memoryPercent = 50;
+     };
   nix = {
     settings = {
       cores = 12;
