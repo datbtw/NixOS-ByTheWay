@@ -6,10 +6,6 @@
 
     noctalia.url = "github:noctalia-dev/noctalia";
 
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     fcitx5-lotus = {
       url = "github:LotusInputMethod/fcitx5-lotus";

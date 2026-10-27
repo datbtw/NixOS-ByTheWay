@@ -44,13 +44,12 @@
     extraConfig = ''
       local mod = "SUPER"
       local terminal = "alacritty"
--- Autostart (tương đương exec-once)
-      -- Noctalia shell tự động chạy qua systemd user service
-      -- (programs.noctalia.systemd.enable = true, WantedBy=graphical-session.target)
-      hl.on("hyprland.start", function()
-        hl.exec_cmd("hypridle")
-      end)
-      -- Monitor — ép scale = 1 (tắt auto scale)
+-- Autostart 
+hl.on("hyprland.start", function()
+   hl.exec_cmd("hypridle")
+   hl.exec_cmd("noctalia")
+ end) 
+-- Monitor — ép scale = 1 
       hl.monitor({
         output   = "",
         mode     = "preferred",
