@@ -26,6 +26,8 @@
 
     # System packages
     ./packages.nix
+
+    ./power.nix
   ];
   zramSwap = {
 	enable = true;
@@ -47,9 +49,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Vá lỗi build Hyprland 0.56.1 với glaze 8.0.0 trên nixpkgs master
-  # (xem overlays.nix để biết chi tiết). Bỏ đi khi upstream đã sửa.
-  nixpkgs.overlays = [ (import ./overlays.nix) ];
 
   system.stateVersion = "26.05";
 
@@ -58,7 +57,7 @@
   time.timeZone = "Asia/Ho_Chi_Minh";
 
   security.polkit.enable = true;
-  services.printing.enable = true;
+  services.printing.enable = false;
   services.libinput.enable = true;
 
   programs.nh = {
@@ -71,6 +70,14 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+
+    # Module x11-bell của pipewire segfault (SIGSEGV trong x11_io_error_exit_handler)
+    # khi Xwayland chết lúc shutdown -> sinh coredump mỗi lần tắt máy.
+    # Condition của module là `module.x11.bell = !false`, nên set false để nó không load.
+    # Chỉ mất tiếng "bell" của X11, không ảnh hưởng âm thanh.
+    extraConfig.pipewire."99-disable-x11-bell" = {
+      "context.properties"."module.x11.bell" = false;
+    };
   };
 
   users.users.nixos-user = {
@@ -107,8 +114,10 @@
   security.pam.services.hyprlock = { };
 
   environment.systemPackages = with pkgs; [
-    hyprpolkitagent   # polkit agent riêng của Hyprland, dùng thay cho polkit_gnome
-                      # (polkit_gnome vẫn cần cho session GNOME hiện tại của bạn,
-                      # giữ nguyên - chỉ thêm hyprpolkitagent cho session Hyprland)
+    # polkit agent cho Hyprland. KDE Plasma đã có agent riêng
+    # (polkit-kde-authentication-agent-1, autostart sẵn) nên KHÔNG cài
+    # polkit_gnome nữa: autostart của nó sẽ tranh slot agent với KDE
+    # ("An authentication agent already exists for the given subject").
+    hyprpolkitagent
   ];
 }

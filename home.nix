@@ -5,9 +5,9 @@
     ./chrome-home.nix
     ./shell.nix
     ./theme-home.nix
-    ./polkit-agent-home.nix
     ./hyprland.nix
     ./noctalia-home.nix
+    ./shutdown-home.nix
   ];
 
   home.username = "nixos-user";
@@ -18,7 +18,7 @@
     spotify fastfetch gnome-tweaks alacritty fish foot
     discord flatpak libreoffice-stable  psmisc bibata-cursors
     vlc cava cmatrix figlet htop btop
-     hw-probe spotify-player 
+kdePackages.fcitx5-configtool     hw-probe spotify-player 
   ];
 
   # i18n.inputMethod đã được gộp về configuration.nix -> input-method.nix

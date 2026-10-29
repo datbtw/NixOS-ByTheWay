@@ -21,7 +21,6 @@
     grim
     slurp
     wl-clipboard
-    polkit_gnome
     corefonts
   ];
 }

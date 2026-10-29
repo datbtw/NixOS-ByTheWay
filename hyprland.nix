@@ -7,7 +7,7 @@
 #   (không có Lua) nên phần dưới vẫn giữ dạng attrset Nix.
 # - Phải bật thêm ở configuration.nix (system-level): programs.hyprland.enable,
 #   xdg.portal, security.pam.services.hyprlock (xem hướng dẫn cuối file khi present).
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # App cần thiết cho Hyprland hoạt động đầy đủ, khai báo ngay trong file này
@@ -48,6 +48,9 @@
 hl.on("hyprland.start", function()
    hl.exec_cmd("hypridle")
    hl.exec_cmd("noctalia")
+   -- polkit agent của Hyprland (unit do package cung cấp, không enable global
+   -- vì KDE cũng có agent riêng -> sẽ tranh slot agent)
+   hl.exec_cmd("systemctl --user start --no-block hyprpolkitagent.service")
  end) 
 -- Monitor — ép scale = 1 
       hl.monitor({
@@ -209,4 +212,10 @@ hl.on("hyprland.start", function()
       ];
     };
   };
+
+  # Hyprland đã tự chạy hypridle qua exec_cmd ở trên, nên bỏ autostart của
+  # systemd unit: KDE Plasma cũng kích hoạt graphical-session.target, nếu để
+  # nguyên thì hypridle chạy cả trong KDE và gọi hyprlock (chỉ dùng được trong
+  # Hyprland) -> hỏng khoá màn hình của KDE.
+  systemd.user.services.hypridle.Install.WantedBy = lib.mkForce [ ];
 }
